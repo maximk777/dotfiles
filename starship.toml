@@ -1,0 +1,17 @@
+format = """
+[](#9A348E)\
+$username[@](#9A348E)\
+$hostname[](bg:#DA627D fg:#9A348E)\
+$directory[](bg:#FCA17D fg:#DA627D)\
+$git_branch$git_status[](fg:#FCA17D bg:#86BBD8)\
+$nodejs$rust$python$java$package\
+[](fg:#86BBD8 bg:#33658A)\
+$time\
+[](fg:#33658A)
+"""
+
+[time]
+disabled = false
+format = "[$time]($style)"
+style = "bg:#33658A fg:white"
+
