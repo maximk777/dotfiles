@@ -8,6 +8,9 @@ return {
       "simrat39/rust-tools.nvim", -- Rust-debugger через LLDB
     },
     config = function()
+      vim.api.nvim_set_hl(0, "Dapbreakpoint", { fg = "#FB4934" })
+      vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "Dapbreakpoint" })
+
       require("dapui").setup()
       require("nvim-dap-virtual-text").setup()
       require("dap-go").setup()
