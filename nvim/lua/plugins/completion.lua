@@ -1,28 +1,47 @@
 return {
-  -- nvim-cmp sources
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "Exafunction/codeium.nvim" },
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "zbirenbaum/copilot-cmp",
+    },
     opts = function(_, opts)
-      table.insert(opts.sources, { name = "codeium" })
+      opts.sources = {
+        { name = "nvim_lsp", group_index = 1 },
+        { name = "copilot", group_index = 2 },
+        { name = "buffer" },
+        { name = "path" },
+      }
     end,
   },
-  { "hrsh7th/cmp-path" },
+  { "hrsh7th/cmp-nvim-lsp", lazy = false },
   { "hrsh7th/cmp-buffer" },
+  { "hrsh7th/cmp-path" },
   { "rafamadriz/friendly-snippets" },
   { "windwp/nvim-autopairs", config = true },
   { "windwp/nvim-ts-autotag", config = true },
-
-  -- AI code suggestions
   {
-    "Exafunction/codeium.nvim",
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
     event = "InsertEnter",
-    config = function()
-      require("codeium").setup({})
-    end,
+    opts = {
+      suggestion = {
+        enabled = false,
+        auto_trigger = true,
+        keymap = {
+          accept = "<C-l>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<C-]>",
+        },
+      },
+      panel = { enabled = false },
+    },
   },
   {
-    "augmentcode/augment.vim",
-    lazy = false,
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+    config = true,
   },
 }
