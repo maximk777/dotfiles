@@ -10,7 +10,14 @@ return {
     },
     config = function() end,
   },
-  { "lewis6991/gitsigns.nvim", config = true },
-  { "sindrets/diffview.nvim", config = true },
-  { "lewis6991/gitsigns.nvim", config = true },
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "BufReadPost",
+    config = true,
+  },
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+    config = true,
+  },
 }
