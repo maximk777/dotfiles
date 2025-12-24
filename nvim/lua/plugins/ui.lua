@@ -76,6 +76,13 @@ return {
           },
         },
       })
+
+      -- Close Neo-tree before quit to allow normal unsaved buffer dialog
+      vim.api.nvim_create_autocmd("QuitPre", {
+        callback = function()
+          pcall(vim.cmd, "Neotree close")
+        end,
+      })
     end,
   },
 
@@ -271,17 +278,21 @@ return {
     event = "VeryLazy",
     opts = {
       spec = {
+        { "<leader>a", desc = "Swap next param" },
+        { "<leader>A", desc = "Swap prev param" },
         { "<leader>b", group = "buffer" },
-        { "<leader>c", group = "code/crates" },
+        { "<leader>c", group = "code/crates/calls" },
         { "<leader>d", group = "debug" },
         { "<leader>f", group = "find" },
-        { "<leader>g", group = "git/go" },
-        { "<leader>h", group = "git hunk" },
+        { "<leader>g", group = "go" },
+        { "<leader>h", group = "git" },
+        { "<leader>j", group = "jump" },
         { "<leader>n", group = "noice" },
         { "<leader>o", group = "outline" },
         { "<leader>r", group = "rust/refactor" },
         { "<leader>s", group = "search/split" },
         { "<leader>t", group = "test/terminal" },
+        { "<leader>u", group = "toggle" },
         { "<leader>x", group = "diagnostics" },
         { "<leader>w", group = "workspace/session" },
       },

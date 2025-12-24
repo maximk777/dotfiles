@@ -15,9 +15,13 @@ return {
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         group = lint_augroup,
         callback = function()
-          -- Skip special buffers (gitsigns, fugitive, etc.)
+          -- Skip virtual/diff buffers
           local bufname = vim.api.nvim_buf_get_name(0)
-          if bufname:match("^gitsigns://") or bufname:match("^fugitive://") then
+          if bufname:match("^gitsigns://")
+            or bufname:match("^fugitive://")
+            or bufname:match("^diffview://")
+            or bufname == ""
+          then
             return
           end
           lint.try_lint()

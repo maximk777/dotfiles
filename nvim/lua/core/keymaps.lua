@@ -5,7 +5,12 @@ local map = vim.keymap.set
 -- Basic
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
-map("n", "<leader>m", "<cmd>messages<cr>", { desc = "Messages" })
+
+-- Jump navigation (like JetBrains Cmd+Option+Left/Right)
+map("n", "<C-o>", "<C-o>", { desc = "Jump back" })
+map("n", "<C-i>", "<C-i>", { desc = "Jump forward" })
+map("n", "<leader>jb", "<C-o>", { desc = "Jump back" })
+map("n", "<leader>jf", "<C-i>", { desc = "Jump forward" })
 
 -- Better up/down
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -61,3 +66,17 @@ end, { desc = "Toggle colorcolumn" })
 map("n", "<leader>ud", function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = "Toggle diagnostics" })
+
+-- Toggle format on save
+vim.g.autoformat = true
+map("n", "<leader>uf", function()
+  vim.g.autoformat = not vim.g.autoformat
+  vim.notify("Format on save: " .. (vim.g.autoformat and "ON" or "OFF"), vim.log.levels.INFO)
+end, { desc = "Toggle format on save" })
+
+-- Toggle inlay hints globally
+map("n", "<leader>uI", function()
+  local enabled = vim.lsp.inlay_hint.is_enabled()
+  vim.lsp.inlay_hint.enable(not enabled)
+  vim.notify("Inlay hints: " .. (not enabled and "ON" or "OFF"), vim.log.levels.INFO)
+end, { desc = "Toggle inlay hints (global)" })

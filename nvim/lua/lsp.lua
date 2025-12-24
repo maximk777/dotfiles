@@ -42,7 +42,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "gl", vim.diagnostic.open_float, "Show diagnostic")
     map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
     map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
-    map("n", "<leader>q", vim.diagnostic.setloclist, "Diagnostic list")
+    map("n", "<leader>xq", vim.diagnostic.setloclist, "Diagnostic loclist")
+
+    -- Call hierarchy
+    map("n", "<leader>ci", vim.lsp.buf.incoming_calls, "Incoming calls")
+    map("n", "<leader>co", vim.lsp.buf.outgoing_calls, "Outgoing calls")
 
     -- Inlay hints toggle
     if vim.lsp.inlay_hint then
@@ -91,9 +95,13 @@ end
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "go", "gomod", "gowork", "gotmpl" },
   callback = function()
-    -- Skip gitsigns buffers
+    -- Skip virtual/diff buffers
     local bufname = vim.api.nvim_buf_get_name(0)
-    if bufname:match("^gitsigns://") or bufname:match("^fugitive://") then
+    if bufname:match("^gitsigns://")
+      or bufname:match("^fugitive://")
+      or bufname:match("^diffview://")
+      or bufname == ""
+    then
       return
     end
     vim.lsp.start({
@@ -133,7 +141,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
   callback = function()
     local bufname = vim.api.nvim_buf_get_name(0)
-    if bufname:match("^gitsigns://") or bufname:match("^fugitive://") then
+    if bufname:match("^gitsigns://")
+      or bufname:match("^fugitive://")
+      or bufname:match("^diffview://")
+      or bufname == ""
+    then
       return
     end
 

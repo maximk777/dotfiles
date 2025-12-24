@@ -239,10 +239,10 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
-      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
-      { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
-      { "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Branch history" },
-      { "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
+      { "<leader>hv", "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
+      { "<leader>hf", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
+      { "<leader>hF", "<cmd>DiffviewFileHistory<cr>", desc = "Branch history" },
+      { "<leader>hc", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
     },
     opts = {
       enhanced_diff_hl = true,
@@ -274,6 +274,124 @@ return {
     keys = {
       { "<leader>wr", "<cmd>AutoSession restore<cr>", desc = "Restore session" },
       { "<leader>ws", "<cmd>AutoSession save<cr>", desc = "Save session" },
+      { "<leader>wD", "<cmd>AutoSession delete<cr>", desc = "Delete session" },
     },
+  },
+
+  -- Undotree - undo history visualization
+  {
+    "mbbill/undotree",
+    keys = {
+      { "<leader>uu", "<cmd>UndotreeToggle<cr>", desc = "Toggle undotree" },
+    },
+    config = function()
+      vim.g.undotree_WindowLayout = 2
+      vim.g.undotree_SetFocusWhenToggle = 1
+    end,
+  },
+
+  -- Marks - visualize marks in sign column
+  {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {
+      default_mappings = true,
+      signs = true,
+      mappings = {
+        set_next = "m,",
+        next = "m]",
+        prev = "m[",
+        preview = "m:",
+        delete_line = "dm-",
+        delete_buf = "dm<space>",
+      },
+    },
+  },
+
+  -- Neoclip - yank history
+  {
+    "AckslD/nvim-neoclip.lua",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    event = "VeryLazy",
+    keys = {
+      { "<leader>fy", "<cmd>Telescope neoclip<cr>", desc = "Yank history" },
+      { "<leader>fY", "<cmd>Telescope macroscope<cr>", desc = "Macro history" },
+    },
+    config = function()
+      require("neoclip").setup({
+        history = 100,
+        enable_persistent_history = false, -- requires sqlite.lua, disabled for simplicity
+        continuous_sync = false,
+        keys = {
+          telescope = {
+            i = { select = "<cr>", paste = "<c-p>", paste_behind = "<c-P>" },
+            n = { select = "<cr>", paste = "p", paste_behind = "P" },
+          },
+        },
+      })
+      require("telescope").load_extension("neoclip")
+    end,
+  },
+
+  -- Visual-multi - multiple cursors
+  {
+    "mg979/vim-visual-multi",
+    event = "VeryLazy",
+    init = function()
+      vim.g.VM_default_mappings = 1
+      vim.g.VM_maps = {
+        ["Find Under"] = "<C-n>",
+        ["Find Subword Under"] = "<C-n>",
+        ["Add Cursor Down"] = "<C-Down>",
+        ["Add Cursor Up"] = "<C-Up>",
+        ["Select All"] = "<C-S-n>",
+        ["Skip Region"] = "<C-x>",
+      }
+      vim.g.VM_theme = "ocean"
+    end,
+  },
+
+  -- Mini.align - text alignment
+  {
+    "echasnovski/mini.align",
+    version = false,
+    keys = {
+      { "ga", mode = { "n", "v" }, desc = "Align" },
+      { "gA", mode = { "n", "v" }, desc = "Align with preview" },
+    },
+    opts = {},
+  },
+
+  -- Exchange - swap text regions
+  {
+    "tommcdo/vim-exchange",
+    keys = {
+      { "cx", mode = "n", desc = "Exchange (motion)" },
+      { "cxx", mode = "n", desc = "Exchange line" },
+      { "X", mode = "x", desc = "Exchange selection" },
+      { "cxc", mode = "n", desc = "Clear exchange" },
+    },
+  },
+
+  -- Goto-preview - peek definitions in floating window
+  {
+    "rmagatti/goto-preview",
+    event = "LspAttach",
+    keys = {
+      { "gpd", function() require("goto-preview").goto_preview_definition() end, desc = "Preview definition" },
+      { "gpi", function() require("goto-preview").goto_preview_implementation() end, desc = "Preview implementation" },
+      { "gpr", function() require("goto-preview").goto_preview_references() end, desc = "Preview references" },
+      { "gpt", function() require("goto-preview").goto_preview_type_definition() end, desc = "Preview type definition" },
+      { "gP", function() require("goto-preview").close_all_win() end, desc = "Close all previews" },
+    },
+    config = function()
+      require("goto-preview").setup({
+        width = 120,
+        height = 25,
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        resizing_mappings = true,
+        references = { telescope = require("telescope.themes").get_dropdown({ hide_preview = false }) },
+      })
+    end,
   },
 }

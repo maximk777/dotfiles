@@ -31,12 +31,18 @@ The most essential keybindings to memorize first:
 | `s` | Flash jump (go anywhere fast) |
 | `vaf` | Select entire function |
 | `gd` | Go to definition |
+| `gpd` | Peek definition (preview) |
 | `K` | Hover documentation |
+| `<C-o>/<C-i>` | Jump back/forward |
 | `<leader>ff` | Find files |
 | `<leader>fg` | Live grep (search text) |
+| `<leader>fy` | Yank history |
 | `<leader>e` | File explorer |
 | `gcc` | Toggle comment |
 | `<leader>rn` | Rename symbol |
+| `<leader>ci/co` | Incoming/outgoing calls |
+| `<C-n>` | Multi-cursor (select word) |
+| `<leader>uu` | Undo tree |
 
 ---
 
@@ -488,6 +494,7 @@ Press `Enter` repeatedly in visual mode to expand selection semantically.
 |-----|--------|
 | `<leader>wr` | Restore session |
 | `<leader>ws` | Save session |
+| `<leader>wD` | Delete session |
 
 ---
 
@@ -759,13 +766,104 @@ This configuration uses **lazy.nvim** with the following main plugins:
 - **LSP**: nvim-lspconfig, mason.nvim
 - **Completion**: nvim-cmp, LuaSnip
 - **Treesitter**: nvim-treesitter, nvim-treesitter-textobjects
-- **Navigation**: Telescope, flash.nvim
+- **Navigation**: Telescope, flash.nvim, goto-preview
 - **Git**: gitsigns.nvim, diffview.nvim
-- **UI**: neo-tree, lualine, bufferline, noice.nvim
+- **UI**: neo-tree, lualine, bufferline, noice.nvim, barbecue (breadcrumbs)
 - **Debug**: nvim-dap, nvim-dap-ui
 - **Go**: go.nvim, neotest-golang
 - **Rust**: rustaceanvim, crates.nvim
-- **Editing**: nvim-surround, Comment.nvim, nvim-autopairs
+- **Editing**: nvim-surround, Comment.nvim, nvim-autopairs, vim-visual-multi, mini.align, vim-exchange
+- **History**: undotree, nvim-neoclip (yank history)
+- **Marks**: marks.nvim
+
+---
+
+## New Features (UX Update)
+
+### Jump Navigation (like JetBrains)
+
+| Key | Action |
+|-----|--------|
+| `<C-o>` | Jump back |
+| `<C-i>` | Jump forward |
+| `<leader>jb` | Jump back (alternative) |
+| `<leader>jf` | Jump forward (alternative) |
+
+### Call Hierarchy (LSP)
+
+| Key | Action |
+|-----|--------|
+| `<leader>ci` | Incoming calls (who calls this?) |
+| `<leader>co` | Outgoing calls (what does this call?) |
+
+### Peek Definitions
+
+| Key | Action |
+|-----|--------|
+| `gpd` | Preview definition |
+| `gpi` | Preview implementation |
+| `gpr` | Preview references |
+| `gpt` | Preview type definition |
+| `gP` | Close all previews |
+
+### Multi-Cursor
+
+| Key | Action |
+|-----|--------|
+| `<C-n>` | Select word, add cursor |
+| `<C-Down>/<C-Up>` | Add cursor below/above |
+| `<C-S-n>` | Select all occurrences |
+| `<C-x>` | Skip current, go to next |
+
+### Undo Tree
+
+| Key | Action |
+|-----|--------|
+| `<leader>uu` | Toggle undo tree |
+
+### Yank History
+
+| Key | Action |
+|-----|--------|
+| `<leader>fy` | Browse yank history |
+| `<leader>fY` | Browse macro history |
+
+### Marks
+
+| Key | Action |
+|-----|--------|
+| `m,` | Set next available mark |
+| `m]` / `m[` | Next/prev mark |
+| `m:` | Preview mark |
+| `dm-` | Delete mark on line |
+| `dm<space>` | Delete all marks in buffer |
+
+### Text Alignment
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `ga` | Normal/Visual | Start align mode |
+| `gA` | Normal/Visual | Align with preview |
+
+**Example**: Select lines, press `ga=` to align by `=`.
+
+### Exchange Text
+
+| Key | Action |
+|-----|--------|
+| `cx{motion}` | Mark for exchange |
+| `cxx` | Exchange lines |
+| `X` (visual) | Exchange selection |
+| `cxc` | Clear exchange |
+
+**Example**: `cxiw` on word1, then `cxiw` on word2 — they swap.
+
+### New Toggles
+
+| Key | Action |
+|-----|--------|
+| `<leader>uf` | Toggle format on save |
+| `<leader>uI` | Toggle inlay hints (global) |
 
 ---
 
